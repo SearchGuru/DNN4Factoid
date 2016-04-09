@@ -22,7 +22,7 @@ def load_raw_data_x_y(path="./raw_data.tsv", y_shift=-1):
         if len(fields) != 2:
             continue
         x = fields[0]
-        y = int(fields[1]) + y_shift
+        y = int(fields[1].strip()) + y_shift
         if len(x) <= 0:
             continue
         X.append(x)
@@ -42,7 +42,7 @@ def load_raw_data_x1_x2_y(path="./raw_data.tsv", y_shift=-1):
             continue
         x1 = fields[0]
         x2 = fields[1]
-        y = int(fields[2]) + y_shift
+        y = int(fields[2].strip()) + y_shift
         if len(x1) <= 0:
             continue
         if len(x2) <= 0:
@@ -73,7 +73,7 @@ def load_raw_data_termx(path="./raw_data.tsv", y_shift=-1, seed=1337, vocabs=Non
         x = fields[0]
         src = fields[1]
         tgt = fields[2]
-        y = int(fields[3]) + y_shift
+        y = int(fields[3].strip()) + y_shift
         if len(x) <= 0:
             continue
         x2 = x.replace(src, tgt)
