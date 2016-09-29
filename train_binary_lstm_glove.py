@@ -29,15 +29,15 @@ max_features = tokenizer.n_symbols
 vocab_dim = tokenizer.vocab_dim
 
 print('Loading data... (Train)')
-(X1, y_train) = deepctxt_util.load_raw_data_x_y(path='./raw_data/person_birthday_deep_learning_training_rawquery.2.tsv')
+(X1, y_train) = deepctxt_util.load_raw_data_x_y(path='./raw_data/person_birthday_deep_learning_training_rawquery_cleaned.2.tsv', y_shift = 0)
 print('Done')
 
 print('Loading data... (Validation)')
-(X3, y_val) = deepctxt_util.load_raw_data_x_y(path='./raw_data/person_birthday_deep_learning_val_rawquery.tsv')
+(X3, y_val) = deepctxt_util.load_raw_data_x_y(path='./raw_data/person_birthday_deep_learning_val_rawquery_cleaned.tsv', y_shift = 0)
 print('Done')
 
 print('Loading data... (Test)')
-(X2, y_test) = deepctxt_util.load_raw_data_x_y(path='./raw_data/person_birthday_deep_learning_eval_rawquery.tsv')
+(X2, y_test) = deepctxt_util.load_raw_data_x_y(path='./raw_data/person_birthday_deep_learning_eval_rawquery_cleaned.tsv', y_shift = 0)
 print('Done')
 
 print('Converting data... (Train)')
@@ -85,25 +85,17 @@ model.add(Activation('softmax'))
 model.compile(loss='binary_crossentropy', optimizer='adam')
 
 print("Train...")
-model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=epoch,
-           validation_data=(X_val, Y_val), show_accuracy=True)
+model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=1,
+           validation_data=(X_val, Y_val))
 
-score, acc = model.evaluate(X_test, Y_test,
-                            batch_size=100,
-                            show_accuracy=True)
-print('Test score:', score)
+
+print("Evluating the model...\n")
+acc = model.evaluate(X_test, Y_test, batch_size=100)
 print('Test accuracy:', acc)
 
-
-classes = model.predicate(X_test, batch_size=100, verbose=1)
-print('Predication of test:', classes)
-
-
-
-
 json_model_string = model.to_json()
-with open("./coarse_type_model_lstm_glove_"+str(batch_size)+"b.json", "w") as f:
+with open("./person_birthday_binary_model_lstm_glove_"+str(batch_size)+"b.json", "w") as f:
     f.write(json_model_string)
-model.save_weights("./coarse_type_model_lstm_glove_" + str(batch_size) + "b.h5")
+model.save_weights("./person_birthday_binary_model_lstm_glove_" + str(batch_size) + "b.h5")
 
 

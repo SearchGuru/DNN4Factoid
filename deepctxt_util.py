@@ -20,8 +20,12 @@ def load_raw_data_x_y(path="./raw_data.tsv", y_shift=-1):
         line = l.replace("\n", "")
         fields = line.split('\t')
         if len(fields) != 2:
+            print('invalid line: ' + line)
             continue
         x = fields[0]
+        if (len(fields[1]) == 0):
+            print('invalid line: ' + line)
+            continue
         y = int(fields[1].strip()) + y_shift
         if len(x) <= 0:
             continue
@@ -29,6 +33,20 @@ def load_raw_data_x_y(path="./raw_data.tsv", y_shift=-1):
         Y.append(y)
     f.close()
     return (X, Y)
+
+def load_raw_data_x(path="./raw_data.tsv"):
+    X = []
+    f = open(path, "r")
+    for l in f:
+        line = l.replace("\n", "")
+        fields = line.split('\t')       
+        x = fields[0]
+        if (len(x) == 0):
+            print('invalid line: ' + line)
+            continue
+        X.append(x)
+    f.close()
+    return X
 
 def load_raw_data_x1_x2_y(path="./raw_data.tsv", y_shift=-1):
     X1 = []
